@@ -1,0 +1,6 @@
+{
+  "name": "Full-Stack POS System",
+  "description": "Point of Sale (POS) system for restaurants and cafes with Vue 3, Laravel REST API, and MySQL",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
