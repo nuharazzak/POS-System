@@ -136,7 +136,6 @@ import { useAuth } from '../composables/useAuth';
 import SummaryCard from '../components/SummaryCard.vue';
 
 const { currentUser } = useAuth();
-const currency不易 = ref('$');
 const currency = ref('$');
 
 const stats = ref({

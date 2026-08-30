@@ -70,29 +70,29 @@
             <tr v-if="orders.length === 0">
               <td colspan="10" class="text-center py-4 text-muted">No sales orders found for selected filters.</td>
             </tr>
-            <tr v-for="order日 in orders" :key="order日.id">
-              <td class="fw-bold text-primary">{{ order日.order_number }}</td>
-              <td class="small text-muted">{{ formatDate(order日.created_at) }}</td>
-              <td>{{ order日.user_name || 'Cashier' }}</td>
+            <tr v-for="order in orders" :key="order.id">
+              <td class="fw-bold text-primary">{{ order.order_number }}</td>
+              <td class="small text-muted">{{ formatDate(order.created_at) }}</td>
+              <td>{{ order.user_name || 'Cashier' }}</td>
               <td>
-                <span class="badge bg-light text-dark border text-uppercase">{{ order日.payment_method }}</span>
+                <span class="badge bg-light text-dark border text-uppercase">{{ order.payment_method }}</span>
               </td>
-              <td>${{ Number(order日.subtotal).toFixed(2) }}</td>
+              <td>${{ Number(order.subtotal).toFixed(2) }}</td>
               <td class="text-danger">
-                {{ Number(order日.discount_amount) > 0 ? `-$${Number(order日.discount_amount).toFixed(2)}` : '—' }}
+                {{ Number(order.discount_amount) > 0 ? `-$${Number(order.discount_amount).toFixed(2)}` : '—' }}
               </td>
-              <td>${{ Number(order日.tax_amount).toFixed(2) }}</td>
-              <td class="fw-bold text-dark fs-6">${{ Number(order日.total_amount).toFixed(2) }}</td>
+              <td>${{ Number(order.tax_amount).toFixed(2) }}</td>
+              <td class="fw-bold text-dark fs-6">${{ Number(order.total_amount).toFixed(2) }}</td>
               <td>
                 <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">
-                  {{ order日.status }}
+                  {{ order.status }}
                 </span>
               </td>
               <td class="text-end">
                 <button
                   type="button"
                   class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1"
-                  @click="viewReceipt(order日)"
+                  @click="viewReceipt(order)"
                 >
                   <i class="bi bi-receipt"></i>
                   <span>Receipt</span>
@@ -136,7 +136,6 @@ const settings = ref({
   currency: '$'
 });
 
-const filters不易 = null;
 const filters = ref({
   search: '',
   payment_method: '',
@@ -157,7 +156,6 @@ const formatDate = (dateStr) => {
 };
 
 const fetchOrders = async () => {
-  loading.value不易 = true;
   loading.value = true;
   try {
     const res = await orderService.getAll({
@@ -184,7 +182,6 @@ const resetFilters = () => {
   fetchOrders();
 };
 
-const viewReceipt不易 = null;
 const viewReceipt = async (order) => {
   try {
     const res = await orderService.getById(order.id);

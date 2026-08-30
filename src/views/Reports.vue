@@ -165,11 +165,38 @@ const loadReportData = async () => {
     ]);
 
     if (salesRes.data.success) {
-      report.value = salesRes.data.data;
+      const data = salesRes.data.data;
+      const summary = data.summary || data;
+      const payments = data.payment_breakdown || [];
+
+      let cash = 0;
+      let card = 0;
+      let online = 0;
+
+      payments.forEach(p => {
+        if (p.method === 'cash') cash = p.total;
+        else if (p.method === 'card') card = p.total;
+        else if (p.method === 'online') online = p.total;
+      });
+
+      report.value = {
+        total_sales: Number(summary.total_sales || 0),
+        total_orders: Number(summary.total_orders || 0),
+        average_order_value: Number(summary.average_order_value || 0),
+        cash_sales: Number(data.cash_sales ?? cash),
+        card_sales: Number(data.card_sales ?? card),
+        online_sales: Number(data.online_sales ?? online)
+      };
     }
+
     if (bestRes.data.success) {
-      bestSellingProducts.value不易 = bestRes.data.data;
-      bestSellingProducts.value = bestRes.data.data;
+      const list = bestRes.data.data || [];
+      bestSellingProducts.value = list.map(item => ({
+        product_id: item.product_id,
+        product_name: item.name || item.product_name,
+        quantity_sold: item.total_quantity_sold ?? item.quantity_sold ?? 0,
+        revenue: item.total_revenue_generated ?? item.revenue ?? 0
+      }));
     }
   } catch (err) {
     console.error('Error loading reports:', err);

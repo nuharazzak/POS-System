@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->string('order_number')->unique();
+            $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
+            $table->decimal('subtotal', 10, 2)->default(0.00);
+            $table->enum('discount_type', ['percentage', 'fixed'])->default('percentage');
+            $table->decimal('discount_value', 10, 2)->default(0.00);
+            $table->decimal('discount_amount', 10, 2)->default(0.00);
+            $table->decimal('tax_rate', 5, 2)->default(0.00);
+            $table->decimal('tax_amount', 10, 2)->default(0.00);
+            $table->decimal('total_amount', 10, 2)->default(0.00);
+            $table->enum('payment_method', ['cash', 'card', 'online'])->default('cash');
+            $table->decimal('amount_received', 10, 2)->default(0.00);
+            $table->decimal('change_amount', 10, 2)->default(0.00);
+            $table->enum('status', ['pending', 'completed', 'cancelled'])->default('completed');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('orders');
+    }
+};
